@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButton,MatIconButton } from '@angular/material/button';
 import { MatIcon} from '@angular/material/icon';
+import { MatBadge } from '@angular/material/badge';
+import { RouterLink } from '@angular/router'; 
+import { EcommerceStore } from '../../ecommerce-store';
+
+
 @Component({
   selector: 'app-header-actions',
-  imports: [MatButton, MatIconButton, MatIcon],
+  imports: [MatButton, MatIconButton, MatIcon, MatBadge, RouterLink],
   template: `
     <div class="flex items-center gap-4">
-      <button matIconButton>
+      <button mat-icon-button [routerLink]="'/wishlist'" [matBadge]="store.wishlistCount()" [matBadgeHidden]="store.wishlistCount()=== 0">
         <mat-icon>favorite</mat-icon>
       </button>
-      <button matIconButton>
+      <button mat-icon-button [routerLink]="'/cart'" [matBadge]="store.cartCount()" [matBadgeHidden]="store.cartCount()=== 0">
         <mat-icon>shopping_cart</mat-icon>
       </button>
       <button matButton>Sign In
@@ -21,5 +26,7 @@ import { MatIcon} from '@angular/material/icon';
   styles: ``,
 })
 export class HeaderActions {
+
+  store = inject(EcommerceStore);
 
 }
