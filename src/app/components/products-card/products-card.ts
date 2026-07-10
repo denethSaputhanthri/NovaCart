@@ -22,7 +22,8 @@ import { Product } from '../../model/products';
         <div class="flex items-center justify-between mt-auto">
           <span class="text-2xl font-bold text-gray-900">\${{ product().price }}</span>
           <!-- Add to Cart button with icon -->
-          <button matButton="filled" class="flex items-center gap-2">
+          <button matButton="filled" class="flex items-center gap-2" (click)="store.addToCart(product())">
+            Add to Cart
             <mat-icon>shopping_cart</mat-icon>
           </button>
         </div>

@@ -22,6 +22,6 @@ import { RouterLink } from '@angular/router';
   `,
   styles: ``,
 })
-export class EmptyWishlist {
 
+export class EmptyWishlist {
 }

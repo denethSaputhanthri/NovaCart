@@ -3,12 +3,13 @@ import { Product } from "./model/products";
 import { patchState, signalMethod, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { produce } from "immer";
 import { HotToastService } from "@ngxpert/hot-toast";
+import { CartItem } from "./model/cart";
 
 export type EcommerceState = {
   products: Product[];
   category: string;
-  wishlist: [];
-  cart: [];
+  wishlist: Product[];
+  cart: CartItem[];
 }
 
 export const EcommerceStore = signalStore(
@@ -130,8 +131,8 @@ export const EcommerceStore = signalStore(
     },
         ],
         category: 'all',
-        wishlist: [] as Product[],
-        cart: [] as Product[],
+        wishlist: [] as Product [],
+        cart: [] as CartItem [],
     }),
 
     withComputed(({category,products,wishlist,cart}) => ({
@@ -142,9 +143,9 @@ export const EcommerceStore = signalStore(
 
         wishlistCount: computed(() =>  wishlist().length),
 
-        cartCount: computed(() =>  cart().length),
+        cartCount: computed(() =>  cart().reduce((total, item) => total + item.quantity, 0)),
 
-
+        
     })),
 
     withMethods((store, toast=inject(HotToastService)) => ({
@@ -170,6 +171,70 @@ export const EcommerceStore = signalStore(
           patchState(store, { wishlist: [] });
           toast.success(`Wishlist cleared!`);
         },
-      })),
+
+        addToCart : (product: Product, quantity = 1) => {
+            const existingCartItem = store.cart().findIndex((item) => item.product.id === product.id);
+
+            const updatedCart = produce(store.cart( ), (draft : CartItem[]) => {
+                if (existingCartItem !== -1) {
+                    draft[existingCartItem].quantity += quantity;
+                    return;
+                } 
+                draft.push({ product, quantity });
+
+            });
+            patchState(store, { cart: updatedCart });
+            toast.success(existingCartItem !== -1 ? `${product.name} quantity updated in cart!` : `${product.name} added to cart!`);
+        },
+        
+        
+        removeFromCart: (product: Product) => {
+            const updatedCart = store.cart().filter((item) => item.product.id !== product.id);
+            patchState(store, { cart: updatedCart });
+            toast.success(`${product.name} removed from cart!`);
+        },
+
+        clearCart : () => {
+            patchState(store, { cart: [] });
+            toast.success(`Cart cleared!`);
+        },
+
+        setQytItem (params :{product:Product, quantity:number}) {
+            const index = store.cart().findIndex((c) => c.product.id === params.product.id);
+            if (index !== -1) {
+                const updated = produce(store.cart(), (draft: CartItem[]) => {
+                    draft[index].quantity = params.quantity;
+                });
+                patchState(store, { cart: updated });
+            }
+        },
+        
+        addAllToCart: () => {
+            const updatedCart = produce(store.cart(), (draft: CartItem[]) => {
+                store.wishlist().forEach((product) => {
+                    if (!draft.find((item) => item.product.id === product.id)) {
+                        draft.push({ product, quantity: 1 });
+                    }
+                });
+            });
+            patchState(store, { cart: updatedCart , wishlist: [] });
+        },
+
+        moveToWishlist: (product: Product) => {
+            const updatedCart = store.cart().filter((item) => item.product.id !== product.id);
+            const updatedWishlist = produce(store.wishlist(), (draft: Product[]) => {
+                if (!draft.find((p) => p.id === product.id)) {
+                    draft.push(product);
+                }
+            });
+            patchState(store, { cart: updatedCart, wishlist: updatedWishlist });
+        },
+
+        removeFromWishlist: (product: Product) => {
+            const updatedWishlist = store.wishlist().filter((p) => p.id !== product.id);
+            patchState(store, { wishlist: updatedWishlist });
+        }
+        
+    }))
 )
 
