@@ -10,7 +10,7 @@ import { MatAnchor } from "@angular/material/button";
 
 @Component({
   selector: 'app-my-cart',
-  imports: [BackButton, ListCartItems, TeaseWishlist, SummerizeOrder, MatAnchor],
+  imports: [BackButton, ListCartItems, TeaseWishlist, SummerizeOrder],
   template: `
     <div class="mx-auto max-w-[1200px] py-6 px-4">
       <app-back-button class="mb-6" navigateTo="/products/all" >Continue Shopping</app-back-button>

@@ -21,7 +21,7 @@ import { EmptyWishlist } from "./empty-wishlist/empty-wishlist";
           @for (product of store.wishlist(); track product.id) {
             <app-products-card [product]="product">
               <button
-                class="!absolute top-3 right-3 w-10 h-10 rounded-full !bg-white border-0  flex items-center justify-center shadow-md cursor-pointer trasition-all  duration-200 hover:scale-110 hover:shadow-lg"
+                class="!absolute top-3 right-3 w-10 h-10 z-10 !bg-white border-0 rounded-lg  flex items-center justify-center shadow-md cursor-pointer trasition-all  duration-200 hover:scale-110 hover:shadow-lg"
                 MatIconButton
                 (click)="store.removeWishlist(product)"
               >

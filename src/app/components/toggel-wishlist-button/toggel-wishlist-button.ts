@@ -2,16 +2,16 @@ import { Component, computed, inject, input } from '@angular/core';
 import { MatIcon } from "@angular/material/icon";
 import { EcommerceStore } from '../../ecommerce-store';
 import { Product } from '../../model/products';
+import { MatIconButton } from '@angular/material/button';
 
 
 @Component({
   selector: 'app-toggel-wishlist-button',
-  imports: [MatIcon],
+  imports: [MatIcon,MatIconButton],
   template: `
-    <button
-        class="w-10 h-10 rounded-full !bg-white border-0  flex items-center justify-center shadow-md cursor-pointer trasition-all  duration-200 hover:scale-110 hover:shadow-lg"
+    <button matIconButton
         [class]="isWishlisted() ? '!text-red-500' : '!text-black-400'"
-        MatIconButton
+       
         (click)="toggleWishlist(product())"
       >
         <mat-icon>{{ isWishlisted() ? 'favorite' : 'favorite_border' }}</mat-icon>
