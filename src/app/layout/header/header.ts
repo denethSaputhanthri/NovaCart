@@ -8,7 +8,7 @@ import { HeaderActions } from "../header-actions/header-actions";
   template: `
     <mat-toolbar class="w-full elevated py-2" >
       <div class="max-w-[1200px] mx-auto w-full flex justify-between items-center">
-        <span>Modern E-commerce</span>
+        <span>Nova_Cart</span>
         <app-header-actions />
       </div>
     </mat-toolbar>

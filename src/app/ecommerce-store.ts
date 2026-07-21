@@ -4,6 +4,7 @@ import { patchState, signalMethod, signalStore, withComputed, withMethods, withS
 import { produce } from "immer";
 import { HotToastService } from "@ngxpert/hot-toast";
 import { CartItem } from "./model/cart";
+import { withStorageSync } from '@angular-architects/ngrx-toolkit';
 
 export type EcommerceState = {
   products: Product[];
@@ -144,9 +145,10 @@ export const EcommerceStore = signalStore(
         wishlistCount: computed(() =>  wishlist().length),
 
         cartCount: computed(() =>  cart().reduce((total, item) => total + item.quantity, 0)),
-
-        
+     
     })),
+    
+    withStorageSync({ key : 'ecommerce-store' ,select : ({wishlist,cart}) => ({wishlist,cart})}),
 
     withMethods((store, toast=inject(HotToastService)) => ({
         setCategory:signalMethod<string>((category: string) => {
@@ -236,5 +238,6 @@ export const EcommerceStore = signalStore(
         }
         
     }))
+
 )
 

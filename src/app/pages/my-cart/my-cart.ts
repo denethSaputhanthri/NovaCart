@@ -6,10 +6,11 @@ import { ProductsCard } from "../../components/products-card/products-card";
 import { ListCartItems } from "./list-cart-items/list-cart-items";
 import { TeaseWishlist } from "./tease-wishlist/tease-wishlist";
 import { SummerizeOrder } from "../../components/summerize-order/summerize-order";
+import { MatAnchor } from "@angular/material/button";
 
 @Component({
   selector: 'app-my-cart',
-  imports: [BackButton, ListCartItems, TeaseWishlist, SummerizeOrder],
+  imports: [BackButton, ListCartItems, TeaseWishlist, SummerizeOrder, MatAnchor],
   template: `
     <div class="mx-auto max-w-[1200px] py-6 px-4">
       <app-back-button class="mb-6" navigateTo="/products/all" >Continue Shopping</app-back-button>
@@ -26,7 +27,14 @@ import { SummerizeOrder } from "../../components/summerize-order/summerize-order
          <app-list-cart-items />
         </div>
         <div>
-          <app-summerize-order />
+          <app-summerize-order >
+            <ng-container actionButton>
+              <button matButtons="filled" class="font-bold py-3 px-4 rounded w-full mt-6">
+                Proceed to Checkout
+              </button>
+            </ng-container>
+          </app-summerize-order >
+          
         </div>
       </div>
     </div>
