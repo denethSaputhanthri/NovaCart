@@ -5,10 +5,11 @@ import { ProductsCard } from '../../components/products-card/products-card';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { EmptyWishlist } from "./empty-wishlist/empty-wishlist";
+import { AddToCartButton } from '../../components/add-to-cart-button/add-to-cart-button';
 
 @Component({
   selector: 'app-my-wishlist',
-  imports: [BackButton, ProductsCard, MatIcon, MatButton, EmptyWishlist],
+  imports: [AddToCartButton,BackButton, ProductsCard, MatIcon, MatButton, EmptyWishlist],
   template: `
     <div class="mx-auto max-w-[1200px] py-6 px-4">
       <app-back-button class="mb-6" navigateTo="/products/all">Continue Shopping</app-back-button>
@@ -27,6 +28,7 @@ import { EmptyWishlist } from "./empty-wishlist/empty-wishlist";
               >
                 <mat-icon>delete</mat-icon>
               </button>
+              <app-add-to-cart-button app-add-cart [product]="product"/>
             </app-products-card>
           }
         </div>

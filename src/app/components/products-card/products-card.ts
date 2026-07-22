@@ -1,13 +1,12 @@
 import { Component, computed, inject, input, output } from '@angular/core';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+
 import { EcommerceStore } from '../../ecommerce-store';
 import { Product } from '../../model/products';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-products-card',
-  imports: [MatButton, MatIcon, RouterLink],
+  imports: [ RouterLink],
   template: `
     <div
       class=" relative bg-white cursor-pointer runded-xl shadow-lg overflow-hidden flex flex-col h-full transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-xl"
@@ -18,7 +17,7 @@ import { RouterLink } from '@angular/router';
         [routerLink]="['/product', product().id]"
         [style.viewTransitionName]="'product-image-' + product().id"
       />
-      <ng-content />
+      <ng-content select="[app-toggle-wishlist]" />
       <div class="p-5 flex flex-col  flex-1" [routerLink]="['/product',(product().id)]">
         <h3 class="text-lg font-semibold text-gray-900 mb-2 leading-tight">{{ product().name }}</h3>
         <p class="text-sm text-gray-600 mb-4 leading-relaxed">{{ product().description }}</p>
@@ -29,14 +28,7 @@ import { RouterLink } from '@angular/router';
         <div class="flex items-center justify-between mt-auto">
           <span class="text-2xl font-bold text-gray-900">\${{ product().price }}</span>
           <!-- Add to Cart button with icon -->
-          <button
-            matButton="filled"
-            class="flex items-center gap-2"
-            (click)="store.addToCart(product())"
-            [style.viewTransitionName]="'add-to-cart-' + product().id">
-            Add to Cart
-            <mat-icon>shopping_cart</mat-icon>
-          </button>
+          <ng-content select="[app-add-cart]" />
         </div>
       </div>
     </div>
